@@ -100,7 +100,7 @@ export default function ViewSecret() {
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="bg-gray-50 p-4 rounded-md">
+            <div className="bg-purple-100 border border-gray-400 p-4 rounded-md">
               <h2 className="text-lg font-semibold mb-2 text-gray-900"></h2>
               <p className="whitespace-pre-wrap text-gray-900">{secret}</p>
             </div>
@@ -112,7 +112,7 @@ export default function ViewSecret() {
             </button>
             
             <div className="rounded-md p-4" style={{ backgroundColor: '#bfbfbf' }}>
-              <p className="text-sm text-red-600">
+              <p className="text-sm text-red-500 italic">
                 This secret has been revealed and cannot be viewed again. Make sure to save it if needed.
               </p>
             </div>

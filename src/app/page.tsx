@@ -75,15 +75,16 @@ export default function Home() {
             <p>{error}</p>
           </div>
         )}
-
+{/* bg-purple-100 border border-gray-400 p-4 rounded-md */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
+              
               Secret
             </label>
             <textarea
               {...register('secret')}
-              className="w-full p-2 border rounded-md text-gray-900"
+              className="w-full p-4 bg-purple-100 text-gray-900 border-gray-400 p-4 rounded-md"
               rows={4}
               placeholder="Enter your secret message..."
             />
@@ -99,7 +100,7 @@ export default function Home() {
             <input
               type="number"
               {...register('expiryDays', { valueAsNumber: true })}
-              className="w-full p-2 border rounded-md text-gray-900"
+              className="w-full p-2 border rounded-md text-gray-900 bg-purple-100 border border-gray-400 rounded-md"
             />
             {errors.expiryDays && (
               <p className="text-red-500 text-sm mt-1">{errors.expiryDays.message}</p>
@@ -113,7 +114,7 @@ export default function Home() {
             <input
               type="number"
               {...register('maxViews', { valueAsNumber: true })}
-              className="w-full p-2 border rounded-md text-gray-900"
+              className="w-full p-2 border rounded-md text-gray-900 bg-purple-100 border border-gray-400 rounded-md"
             />
             {errors.maxViews && (
               <p className="text-red-500 text-sm mt-1">{errors.maxViews.message}</p>
@@ -127,7 +128,7 @@ export default function Home() {
             <input
               type="password"
               {...register('passkey')}
-              className="w-full p-2 border rounded-md text-gray-900"
+              className="w-full p-2 border rounded-md text-gray-900 bg-purple-100 border border-gray-400 rounded-md"
               placeholder="Enter a passkey for additional security"
             />
           </div>
