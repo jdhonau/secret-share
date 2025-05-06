@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Secret Share - Secure Secret Sharing",
   description: "Share sensitive information securely with automatic expiration and view limits.",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
@@ -16,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-50`}>{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

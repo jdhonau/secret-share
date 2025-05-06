@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CryptoJS from 'crypto-js';
+import Header from './components/Header';
 
 const formSchema = z.object({
   secret: z.string().min(1, 'Secret is required'),
@@ -67,8 +68,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen p-8 max-w-2xl mx-auto">
-      <h1 className="text-4xl font-bold mb-8">Secure Secret Sharing</h1>
-      
+      <Header />
       <div className="bg-white p-6 rounded-lg shadow-lg">
         {error && (
           <div className="mb-6 bg-red-50 p-4 rounded-md text-red-700">
@@ -135,7 +135,7 @@ export default function Home() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400"
+            className="w-full bg-purple-900 text-white py-2 px-4 rounded-md hover:bg-purple-200 hover:text-purple-900 transition-colors disabled:bg-blue-400"
           >
             {isLoading ? 'Generating...' : 'Generate Secure Link'}
           </button>
@@ -143,7 +143,7 @@ export default function Home() {
 
         {generatedLink && (
           <div className="mt-6 p-4 bg-gray-50 rounded-md">
-            <h2 className="text-lg font-semibold mb-2">Your Secure Link</h2>
+            <h2 className="text-lg font-semibold mb-2 text-purple-900">Your Secure Link</h2>
             <div className="flex items-center gap-2">
               <input
                 type="text"
@@ -153,7 +153,7 @@ export default function Home() {
               />
               <button
                 onClick={() => navigator.clipboard.writeText(generatedLink)}
-                className="bg-gray-200 p-2 rounded-md hover:bg-gray-300 transition-colors"
+                className="bg-purple-900 p-2 rounded-md hover:bg-purple-200 hover:text-purple-900 transition-colors"
               >
                 Copy
               </button>
@@ -167,3 +167,4 @@ export default function Home() {
     </main>
   );
 }
+

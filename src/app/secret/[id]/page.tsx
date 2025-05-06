@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import CryptoJS from 'crypto-js';
+import Header from '../../components/Header';
 
 export default function ViewSecret() {
   const { id } = useParams();
@@ -54,6 +55,7 @@ export default function ViewSecret() {
   if (isLoading) {
     return (
       <main className="min-h-screen p-8 max-w-2xl mx-auto">
+        <Header />
         <div className="text-center">Loading...</div>
       </main>
     );
@@ -62,6 +64,7 @@ export default function ViewSecret() {
   if (error) {
     return (
       <main className="min-h-screen p-8 max-w-2xl mx-auto">
+        <Header />
         <div className="bg-red-50 p-4 rounded-md text-red-700">
           <h2 className="text-lg font-semibold mb-2">Error</h2>
           <p>{error}</p>
@@ -72,8 +75,9 @@ export default function ViewSecret() {
 
   return (
     <main className="min-h-screen p-8 max-w-2xl mx-auto">
+      <Header />
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-6 text-gray-900">View Secret</h1>
+        <h1 className="text-2xl font-bold mb-6 text-purple-900">Secret Retrieval</h1>
 
         {!decrypted ? (
           <div className="space-y-4">
@@ -89,7 +93,7 @@ export default function ViewSecret() {
             />
             <button
               onClick={handleDecrypt}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+              className="w-full bg-purple-900 text-white py-2 px-4 rounded-md hover:bg-purple-200 hover:text-purple-900 transition-colors"
             >
               Decrypt Secret
             </button>
@@ -97,9 +101,16 @@ export default function ViewSecret() {
         ) : (
           <div className="space-y-4">
             <div className="bg-gray-50 p-4 rounded-md">
-              <h2 className="text-lg font-semibold mb-2 text-gray-900">Secret Message</h2>
+              <h2 className="text-lg font-semibold mb-2 text-gray-900"></h2>
               <p className="whitespace-pre-wrap text-gray-900">{secret}</p>
             </div>
+            <button
+              onClick={() => secret && navigator.clipboard.writeText(secret)}
+              className="bg-gray-400 p-2 rounded-md hover:bg-gray-300 transition-colors"
+            >
+              Copy
+            </button>
+            
             <div className="rounded-md p-4" style={{ backgroundColor: '#bfbfbf' }}>
               <p className="text-sm text-red-600">
                 This secret has been revealed and cannot be viewed again. Make sure to save it if needed.
