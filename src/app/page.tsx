@@ -84,7 +84,7 @@ export default function Home() {
             </label>
             <textarea
               {...register('secret')}
-              className="w-full p-4 bg-purple-100 text-gray-900 border-gray-400 p-4 rounded-md"
+              className="w-full p-4 border-1 bg-purple-100 text-gray-900 border-gray-400 p-4 rounded-md"
               rows={4}
               placeholder="Enter your secret message..."
             />
@@ -100,7 +100,7 @@ export default function Home() {
             <input
               type="number"
               {...register('expiryDays', { valueAsNumber: true })}
-              className="w-full p-2 border rounded-md text-gray-900 bg-purple-100 border border-gray-400 rounded-md"
+              className="w-full p-2 border-1 rounded-md text-gray-900 bg-purple-100 border-gray-400 rounded-md"
             />
             {errors.expiryDays && (
               <p className="text-red-500 text-sm mt-1">{errors.expiryDays.message}</p>
@@ -114,7 +114,7 @@ export default function Home() {
             <input
               type="number"
               {...register('maxViews', { valueAsNumber: true })}
-              className="w-full p-2 border rounded-md text-gray-900 bg-purple-100 border border-gray-400 rounded-md"
+              className="w-full p-2 border-1 rounded-md text-gray-900 bg-purple-100 border-gray-400 rounded-md"
             />
             {errors.maxViews && (
               <p className="text-red-500 text-sm mt-1">{errors.maxViews.message}</p>
@@ -128,7 +128,7 @@ export default function Home() {
             <input
               type="password"
               {...register('passkey')}
-              className="w-full p-2 border rounded-md text-gray-900 bg-purple-100 border border-gray-400 rounded-md"
+              className="w-full p-2 border-1 rounded-md text-gray-900 bg-purple-100 border-gray-400 rounded-md"
               placeholder="Enter a passkey for additional security"
             />
           </div>
