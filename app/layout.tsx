@@ -20,8 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="min-h-screen bg-background">
+      <body className={inter.className} style={{
+        background: `linear-gradient(to bottom right, var(--gradient-start), var(--gradient-end))`,
+        backgroundAttachment: 'fixed'
+      }}>
+        <div className="min-h-screen bg-background/80 backdrop-blur-sm">
           {children}
         </div>
       </body>
