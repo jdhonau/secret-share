@@ -75,11 +75,9 @@ export default function Home() {
             <p>{error}</p>
           </div>
         )}
-{/* bg-purple-100 border border-gray-400 p-4 rounded-md */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              
               Secret
             </label>
             <textarea

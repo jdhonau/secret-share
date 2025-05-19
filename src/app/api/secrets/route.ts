@@ -1,96 +1,57 @@
-import { NextResponse } from 'next/server';
-import crypto from 'crypto';
+import { NextResponse } from "next/server"
+import { randomUUID } from "crypto"
 
-// In a real application, this would be a database
-const secrets = new Map<string, {
-  secret: string;
-  expiresAt: Date;
-  maxViews: number;
-  remainingViews: number;
-}>();
+// This is a simple in-memory store for demonstration
+// In production, you should use a database
+const secretsStore: Record<
+  string,
+  {
+    secret: string
+    expiryDate: Date
+    maxViews: number
+    views: number
+  }
+> = {}
+
+// Cleanup function to remove expired secrets (would be better handled by a cron job in production)
+const cleanupExpiredSecrets = () => {
+  const now = new Date()
+  Object.keys(secretsStore).forEach((id) => {
+    if (secretsStore[id].expiryDate < now || secretsStore[id].views >= secretsStore[id].maxViews) {
+      delete secretsStore[id]
+    }
+  })
+}
 
 export async function POST(request: Request) {
   try {
-    const { secret, expiryDays, maxViews } = await request.json();
-
-    // Generate a unique ID for the secret
-    const id = crypto.randomBytes(16).toString('hex');
-    
-    // Calculate expiration date
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + expiryDays);
-
-    // Store the secret
-    secrets.set(id, {
-      secret,
-      expiresAt,
-      maxViews,
-      remainingViews: maxViews,
-    });
-
-    return NextResponse.json({ id }, { status: 201 });
-  } catch (error) {
-    console.error('Error creating secret:', error);
-    return NextResponse.json(
-      { error: 'Failed to create secret' },
-      { status: 500 }
-    );
-  }
-}
-
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-
-    if (!id) {
-      return NextResponse.json(
-        { error: 'Secret ID is required' },
-        { status: 400 }
-      );
-    }
-
-    const secret = secrets.get(id);
+    const { secret, expiryDays, maxViews } = await request.json()
 
     if (!secret) {
-      return NextResponse.json(
-        { error: 'Secret not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Secret is required" }, { status: 400 })
     }
 
-    // Check if secret has expired
-    if (new Date() > secret.expiresAt) {
-      secrets.delete(id);
-      return NextResponse.json(
-        { error: 'Secret has expired' },
-        { status: 410 }
-      );
+    // Generate a unique ID for the secret
+    const id = randomUUID()
+
+    // Calculate expiry date
+    const expiryDate = new Date()
+    expiryDate.setDate(expiryDate.getDate() + (expiryDays || 7))
+
+    // Store the secret
+    secretsStore[id] = {
+      secret,
+      expiryDate,
+      maxViews: maxViews || 1,
+      views: 0,
     }
 
-    // Check if there are remaining views
-    if (secret.remainingViews <= 0) {
-      secrets.delete(id);
-      return NextResponse.json(
-        { error: 'Maximum views exceeded' },
-        { status: 410 }
-      );
-    }
+    // Run cleanup to remove expired secrets
+    cleanupExpiredSecrets()
 
-    // Decrease remaining views
-    secret.remainingViews--;
-
-    // If this was the last view, delete the secret
-    if (secret.remainingViews === 0) {
-      secrets.delete(id);
-    }
-
-    return NextResponse.json({ secret: secret.secret });
+    return NextResponse.json({ id })
   } catch (error) {
-    console.error('Error retrieving secret:', error);
-    return NextResponse.json(
-      { error: 'Failed to retrieve secret' },
-      { status: 500 }
-    );
+    console.error("Error creating secret:", error)
+    return NextResponse.json({ error: "Failed to create secret" }, { status: 500 })
   }
-} 
+}
