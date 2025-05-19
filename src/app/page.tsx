@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { ZodSchema } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CryptoJS from 'crypto-js';
-import Header from '../src/app/components/Header';
+import Header from '@/app/components/Header';
+import { NextResponse } from 'next/server';
 
 const formSchema = z.object({
   secret: z.string().min(1, 'Secret is required'),

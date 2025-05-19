@@ -1,19 +1,11 @@
 import { NextResponse } from "next/server"
+import { secretsStore } from "@/app/lib/store"
 
-// This is a simple in-memory store for demonstration
-// In production, you should use a database
-const secretsStore: Record<
-  string,
-  {
-    secret: string
-    expiryDate: Date
-    maxViews: number
-    views: number
-  }
-> = {}
-
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const id = params.id
+export async function GET(
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params
 
   // Check if the secret exists
   if (!secretsStore[id]) {

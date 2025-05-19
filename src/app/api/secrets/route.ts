@@ -1,27 +1,6 @@
 import { NextResponse } from "next/server"
 import { randomUUID } from "crypto"
-
-// This is a simple in-memory store for demonstration
-// In production, you should use a database
-const secretsStore: Record<
-  string,
-  {
-    secret: string
-    expiryDate: Date
-    maxViews: number
-    views: number
-  }
-> = {}
-
-// Cleanup function to remove expired secrets (would be better handled by a cron job in production)
-const cleanupExpiredSecrets = () => {
-  const now = new Date()
-  Object.keys(secretsStore).forEach((id) => {
-    if (secretsStore[id].expiryDate < now || secretsStore[id].views >= secretsStore[id].maxViews) {
-      delete secretsStore[id]
-    }
-  })
-}
+import { secretsStore } from "@/app/lib/store"
 
 export async function POST(request: Request) {
   try {
@@ -45,9 +24,6 @@ export async function POST(request: Request) {
       maxViews: maxViews || 1,
       views: 0,
     }
-
-    // Run cleanup to remove expired secrets
-    cleanupExpiredSecrets()
 
     return NextResponse.json({ id })
   } catch (error) {
