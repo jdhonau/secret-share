@@ -16,12 +16,23 @@ const buttonVariants = {
     lg: "h-11 rounded-md px-8",
     icon: "h-10 w-10",
   },
+} as const
+
+type ButtonVariant = keyof typeof buttonVariants.variant
+type ButtonSize = keyof typeof buttonVariants.size
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant
+  size?: ButtonSize
+  className?: string
+  children?: React.ReactNode
 }
 
-const Button = React.forwardRef(({ 
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ 
   className, 
   variant = "default", 
-  size = "default", 
+  size = "default",
+  children,
   ...props 
 }, ref) => {
   return (
@@ -34,9 +45,12 @@ const Button = React.forwardRef(({
       )}
       ref={ref}
       {...props}
-    />
+    >
+      {children}
+    </button>
   )
 })
 Button.displayName = "Button"
 
-export { Button, buttonVariants } 
+export { Button, buttonVariants }
+export type { ButtonProps, ButtonVariant, ButtonSize } 

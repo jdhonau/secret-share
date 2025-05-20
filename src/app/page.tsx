@@ -9,11 +9,14 @@ import CryptoJS from 'crypto-js';
 import Header from '@/app/components/Header';
 import { NextResponse } from 'next/server';
 import ShareButton from '@/app/components/ShareButton';
+import CodeEditor from '@/app/components/CodeEditor';
+
 const formSchema = z.object({
   secret: z.string().min(1, 'Secret is required'),
   expiryDays: z.number().min(1).max(30),
   maxViews: z.number().min(1).max(100),
   passkey: z.string().optional(),
+  language: z.string().default('plaintext'),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -22,14 +25,19 @@ export default function Home() {
   const [generatedLink, setGeneratedLink] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState('plaintext');
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       expiryDays: 7,
       maxViews: 1,
+      secret: '',
+      language: 'plaintext',
     },
   });
+
+  const secretValue = watch('secret');
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -50,6 +58,7 @@ export default function Home() {
           secret: encryptedSecret,
           expiryDays: data.expiryDays,
           maxViews: data.maxViews,
+          language: selectedLanguage,
         }),
       });
 
@@ -82,11 +91,11 @@ export default function Home() {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Secret
             </label>
-            <textarea
-              {...register('secret')}
-              className="w-full p-4 border-1 bg-purple-100 text-gray-900 border-gray-400 p-4 rounded-md"
-              rows={4}
-              placeholder="Enter your secret message..."
+            <CodeEditor
+              value={secretValue}
+              onChange={(value: string) => setValue('secret', value)}
+              onLanguageChange={(lang: string) => setSelectedLanguage(lang)}
+              className="w-full"
             />
             {errors.secret && (
               <p className="text-red-500 text-sm mt-1">{errors.secret.message}</p>

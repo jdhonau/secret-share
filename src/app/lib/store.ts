@@ -6,6 +6,7 @@ export const secretsStore: Record<
     expiryDate: Date
     maxViews: number
     views: number
+    language: string
   }
 > = {}
 
