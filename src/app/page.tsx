@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import CryptoJS from 'crypto-js';
 import Header from '@/app/components/Header';
 import { NextResponse } from 'next/server';
-
+import ShareButton from '@/app/components/ShareButton';
 const formSchema = z.object({
   secret: z.string().min(1, 'Secret is required'),
   expiryDays: z.number().min(1).max(30),
@@ -154,10 +154,11 @@ export default function Home() {
               />
               <button
                 onClick={() => navigator.clipboard.writeText(generatedLink)}
-                className="bg-purple-900 p-2 rounded-md hover:bg-purple-200 hover:text-purple-900 transition-colors"
+                className="bg-purple-900 p-2 rounded-md text-white hover:bg-purple-200 hover:text-purple-900 transition-colors"
               >
                 Copy
               </button>
+              <ShareButton />
             </div>
             <p className="text-sm text-gray-600 mt-2">
               Share this link with the intended recipient. The secret will be destroyed after viewing or when it expires.
