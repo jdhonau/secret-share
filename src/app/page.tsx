@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ZodSchema } from 'zod';
@@ -16,7 +16,7 @@ const formSchema = z.object({
   expiryDays: z.number().min(1).max(30),
   maxViews: z.number().min(1).max(100),
   passkey: z.string().optional(),
-  language: z.string().default('plaintext'),
+  language: z.string(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -36,6 +36,23 @@ export default function Home() {
       language: 'plaintext',
     },
   });
+
+  // Check for shared content on mount
+  useEffect(() => {
+    const sharedContent = localStorage.getItem('sharedContent')
+    const sharedLanguage = localStorage.getItem('sharedLanguage')
+    
+    if (sharedContent) {
+      setValue('secret', sharedContent)
+      if (sharedLanguage) {
+        setSelectedLanguage(sharedLanguage)
+        setValue('language', sharedLanguage)
+      }
+      // Clear the shared content after using it
+      localStorage.removeItem('sharedContent')
+      localStorage.removeItem('sharedLanguage')
+    }
+  }, [setValue])
 
   const secretValue = watch('secret');
 

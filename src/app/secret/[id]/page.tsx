@@ -1,16 +1,17 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import CryptoJS from "crypto-js"
 import Header from "@/app/components/Header"
 import CodeEditor from "@/app/components/CodeEditor"
 import { Button } from "@/app/components/Button"
 import { DownloadButton } from "@/app/components/DownloadButton"
-import { Copy } from "lucide-react"
+import { Copy, Share2 } from "lucide-react"
 
 export default function SecretPage() {
   const params = useParams()
+  const router = useRouter()
   const id = params.id as string
 
   const [secret, setSecret] = useState<string | null>(null)
@@ -84,6 +85,16 @@ export default function SecretPage() {
     }
   }
 
+  const handleShareEdits = () => {
+    if (secret) {
+      // Store the current content in localStorage
+      localStorage.setItem('sharedContent', secret)
+      localStorage.setItem('sharedLanguage', language)
+      // Redirect to the main page
+      router.push('/')
+    }
+  }
+
   if (isLoading) {
     return (
       <main className="min-h-screen p-8 max-w-2xl mx-auto">
@@ -128,6 +139,14 @@ export default function SecretPage() {
                   Copy
                 </Button>
                 <DownloadButton content={secret} language={language} />
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={handleShareEdits}
+                >
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Share Edits
+                </Button>
               </div>
             </div>
             <div className="relative">
