@@ -188,7 +188,7 @@ export default function Home() {
               <ShareButton link={generatedLink} />
             </div>
             <p className="text-sm text-gray-600 mt-2">
-              Share this link with the intended recipient. The secret will be destroyed after viewing or when it expires.
+              Share this link with the intended recipient. The secret wnpm ill be destroyed after viewing or when it expires.
             </p>
           </div>
         )}
