@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { ZodSchema } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import CryptoJS from 'crypto-js';
 import Header from '@/app/components/Header';
 import { NextResponse } from 'next/server';
-import ShareButton from '@/app/components/ShareButton';
-import CodeEditor from '@/app/components/CodeEditor';
+import ShareButton from './components/ShareButton';
+import CodeEditor from './components/CodeEditor';
+import { Button } from './components/Button';
+import { DownloadButton } from './components/DownloadButton';
 
 const formSchema = z.object({
   secret: z.string().min(1, 'Secret is required'),
@@ -184,7 +185,7 @@ export default function Home() {
               >
                 Copy
               </button>
-              <ShareButton />
+              <ShareButton link={generatedLink} />
             </div>
             <p className="text-sm text-gray-600 mt-2">
               Share this link with the intended recipient. The secret will be destroyed after viewing or when it expires.
